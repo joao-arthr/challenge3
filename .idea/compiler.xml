@@ -7,8 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
+        <module name="state-management" />
         <module name="messaging" />
-        <module name="state-manegement" />
         <module name="data-persistence" />
       </profile>
     </annotationProcessing>
@@ -22,7 +22,7 @@
       <module name="data-persistance" options="-parameters" />
       <module name="data-persistence" options="-parameters" />
       <module name="messaging" options="-parameters" />
-      <module name="state-manegement" options="-parameters" />
+      <module name="state-management" options="-parameters" />
     </option>
   </component>
 </project>
