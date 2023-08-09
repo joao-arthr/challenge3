@@ -5,11 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.compass.datapersistence.repository")
 public class DataPersistenceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(DataPersistenceApplication.class, args);
 	}
-
 }

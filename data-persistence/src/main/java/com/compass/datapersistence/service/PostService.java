@@ -1,6 +1,7 @@
 package com.compass.datapersistence.service;
 
 import com.compass.datapersistence.entity.Post;
+import com.compass.datapersistence.exception.PostNotFoundException;
 import com.compass.datapersistence.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class PostService {
     }
 
     public Post getPostById(Long postId) {
-        return postRepository.findById(postId).orElse(null);
+        return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post not found"));
     }
 
     public List<Post> getAllPosts() {

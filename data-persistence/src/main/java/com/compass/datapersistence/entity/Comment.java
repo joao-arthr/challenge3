@@ -8,8 +8,6 @@ import lombok.Data;
 public class Comment {
     @Id
     private int id;
-    private String name;
-    private String email;
     private String body;
     @ManyToOne
     private Post post;
