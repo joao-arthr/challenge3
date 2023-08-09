@@ -8,13 +8,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/history")
+@RequestMapping("/api/state")
 public class PostStateController {
 
     private final PostStateService postStateService;
@@ -35,13 +34,12 @@ public class PostStateController {
         ).body(responseHistory);
     }
 
-
     @GetMapping("/{postId}")
     public ResponseEntity<List<PostStateDTO>> getAllHistories(@PathVariable Long postId) {
         List<PostState> histories = postStateService.getAllHistoryByPostId(postId);
         List<PostStateDTO> postStateDTOS = histories.stream()
                 .map(postState -> modelMapper.map(postState, PostStateDTO.class))
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(postStateDTOS);
     }
 

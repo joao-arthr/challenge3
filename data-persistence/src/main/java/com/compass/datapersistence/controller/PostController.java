@@ -49,7 +49,7 @@ public class PostController {
          try{
             PostDTO postDTO = modelMapper.map(postEntity, PostDTO.class);
             return ResponseEntity.ok(postDTO);
-        } catch(PostNotFoundException ex){
+         } catch(PostNotFoundException ex){
             return ResponseEntity.notFound().build();
          }
     }
