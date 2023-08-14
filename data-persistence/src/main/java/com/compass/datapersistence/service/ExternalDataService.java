@@ -3,9 +3,13 @@ package com.compass.datapersistence.service;
 import com.compass.datapersistence.dto.CommentDTO;
 import com.compass.datapersistence.dto.PostDTO;
 import com.compass.datapersistence.entity.Post;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +24,6 @@ public class ExternalDataService {
     public Mono<PostDTO> fetchPost(Long postId){
         return webClient.get()
                 .uri("/posts/{postId}", postId)
-                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(PostDTO.class);
     }

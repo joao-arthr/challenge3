@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostStateDTO{
-    Integer id;
+    Long id;
     Status status;
     LocalDateTime date;
     Post post;

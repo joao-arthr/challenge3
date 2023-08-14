@@ -34,14 +34,17 @@ public class MessageConsumer {
     public void receivePostFindMessage(Long postId) {
         postStateService.statePostFind(postId);
         var post = postService.getPostById(postId);
-        externalDataService.fetchPost(postId)
-                .subscribe(
-                        postDTO -> {
-                            post.setTitle(postDTO.getTitle());
-                            post.setBody(postDTO.getBody());
-                            messageProducer.sendPostOkMessage(post);
-                        }
-                );
+        externalDataService.fetchPost(postId).subscribe(
+                postDTO -> {
+                    post.setTitle(postDTO.getTitle());
+                    post.setBody(postDTO.getBody());
+
+                    messageProducer.sendPostOkMessage(post);
+                },
+                error ->{
+                    System.out.println(error.getLocalizedMessage());
+                }
+        );
 
     }
     @JmsListener(destination = "POST_OK")
