@@ -1,18 +1,10 @@
 
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-ä
-Zdata-persistence/src/main/java/com/compass/datapersistence/DataPersistenceApplication.java,3\5\35d8576bb30028cfc5c5f88e0a43b75548c35a3b
-ê
-`data-persistence/src/main/java/com/compass/datapersistence/exception/GlobalExceptionHandler.java,d\4\d4e1a98a71ec6b38b4f82813473eed6fbcdf7032
 è
 _data-persistence/src/main/java/com/compass/datapersistence/exception/PostNotFoundException.java,3\4\34a7ee3cba12aa11e59ad9b6c63aa09ce7e5a97a
-Ü
-Vdata-persistence/src/main/java/com/compass/datapersistence/service/CommentService.java,c\9\c994c0bb20df6a324f559e4559b2d0143e32b6c1
 ë
 adata-persistence/src/main/java/com/compass/datapersistence/exception/EntityNotFoundException.java,3\3\33b49c6a5e6b9ce74c44b793a1f53379a4e70035
-~
-Ndata-persistence/src/main/java/com/compass/datapersistence/entity/Comment.java,3\9\390f4f6c4fa96b6de463a57517f0fe44aa83fc9e
 Ä
 Pdata-persistence/src/main/java/com/compass/datapersistence/config/AppConfig.java,6\1\61b6d6adff5ae2d0772c054170f66ce709dd9f04
 E
@@ -21,11 +13,5 @@ E
 Qnaming-server/src/main/java/com/compass/namingserver/NamingServerApplication.java,d\2\d2fa21899373a467d31d318f08dcd8e09ff77984
 ä
 Zstate-management/src/main/java/com/compass/statemanegement/StateManagementApplication.java,c\d\cd511a4f6357c759ca1c83e6040598b3c942a12f
-H
-data-persistence/pom.xml,9\c\9c59819dcc821060f5035071b406c871e70005a4
-é
-^data-persistence/src/main/java/com/compass/datapersistence/repository/PostStateRepository.java,7\c\7cf8f8bda2079030d9ab5843a78662512d47d07f
 â
 Ydata-persistence/src/main/java/com/compass/datapersistence/repository/PostRepository.java,3\b\3b75d7ec1a38cd48a9688d8bb19feb4442d52bb0
-É
-Sdata-persistence/src/main/java/com/compass/datapersistence/service/PostService.java,7\d\7d758186b38548fecfe7f8c89426c54ba7b9838e

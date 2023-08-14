@@ -7,7 +7,7 @@ import lombok.Data;
 @Entity
 public class Comment {
     @Id
-    private int id;
+    private Long id;
     private String body;
     @ManyToOne
     @JoinColumn(name="post_id")

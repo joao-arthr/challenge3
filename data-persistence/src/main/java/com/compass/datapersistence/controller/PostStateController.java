@@ -1,46 +1,66 @@
 package com.compass.datapersistence.controller;
 
-import com.compass.datapersistence.dto.PostStateDTO;
-import com.compass.datapersistence.entity.PostState;
+
+import com.compass.datapersistence.entity.Post;
+import com.compass.datapersistence.messaging.MessageProducer;
+import com.compass.datapersistence.service.PostService;
 import com.compass.datapersistence.service.PostStateService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.util.List;
 
 
-@AllArgsConstructor
 @RestController
-@RequestMapping("/api/status")
+@AllArgsConstructor
+@RequestMapping("/posts")
 public class PostStateController {
 
-    private final PostStateService postStateService;
-    private final ModelMapper modelMapper;
+    private PostService postService;
+    private MessageProducer messageProducer;
+    private PostStateService postStateService;
 
-    @PostMapping
-    public ResponseEntity<PostStateDTO> createHistory(@RequestBody PostStateDTO postStateDTO) {
-        PostState postStateEntity = modelMapper.map(postStateDTO, PostState.class);
-        PostState createdPostState = postStateService.createHistory(postStateEntity);
-        PostStateDTO responseHistory = modelMapper.map(createdPostState, PostStateDTO.class);
 
-        return ResponseEntity.created(
-                ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(createdPostState.getId())
-                        .toUri()
-        ).body(responseHistory);
+    @PostMapping("/{postId}")
+    public ResponseEntity<String> createPost(@PathVariable @Min(1) @Max(100) Long postId) {
+            messageProducer.sendCreatedMessage(postId);
+            return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<List<PostStateDTO>> getAllHistories(@PathVariable Long postId) {
-        List<PostState> histories = postStateService.getAllHistoryByPostId(postId);
-        List<PostStateDTO> postStateDTOS = histories.stream()
-                .map(postState -> modelMapper.map(postState, PostStateDTO.class))
-                .toList();
-        return ResponseEntity.ok(postStateDTOS);
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> disablePost(@PathVariable @Min(1) @Max(100) Long postId) {
+
+        var post = postService.getPostById(postId);
+        if(postStateService.canBeDisabled(post)){
+            messageProducer.sendDisabledMessage(postId);
+            return ResponseEntity.ok().build();
+        } else{
+            return ResponseEntity.badRequest().body("Must be an ENABLED post");
+        }
+
     }
+
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<String> reprocessPost(@PathVariable @Min(1) @Max(100) Long postId) {
+        var post = postService.getPostById(postId);
+        if(postStateService.isUpdatable(post)){
+            messageProducer.sendUpdatingMessage(postId);
+            return ResponseEntity.ok().build();
+        } else{
+            return ResponseEntity.badRequest().body("Must be a DISABLED or ENABLED post");
+        }
+
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> getAllPosts(){
+        return ResponseEntity.ok(postService.getAllPosts());
+    }
+
+
 
 }

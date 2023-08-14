@@ -1,6 +1,6 @@
-package com.compass.statemanegement.enums;
+package com.compass.datapersistence.enums;
 
-public enum PostState {
+public enum Status {
     CREATED,
     POST_FIND,
     POST_OK,
@@ -8,6 +8,6 @@ public enum PostState {
     COMMENTS_OK,
     ENABLED,
     DISABLED,
-    UPDATING,
-    FAILED
+    FAILED,
+    UPDATING
 }

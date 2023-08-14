@@ -17,6 +17,8 @@
       <set>
         <option value="$PROJECT_DIR$/data-persistance/pom.xml" />
         <option value="$PROJECT_DIR$/messaging/pom.xml" />
+        <option value="$PROJECT_DIR$/naming-server/pom.xml" />
+        <option value="$PROJECT_DIR$/state-management/pom.xml" />
       </set>
     </option>
   </component>

@@ -1,10 +1,13 @@
-package com.compass.statemanegement.messaging;
+package com.compass.datapersistence.messaging;
 
-import com.compass.statemanegement.dto.CommentDTO;
-import com.compass.statemanegement.dto.PostDTO;
-import com.compass.statemanegement.service.ExternalDataService;
-import com.compass.statemanegement.service.PostStateService;
+import com.compass.datapersistence.entity.Comment;
+import com.compass.datapersistence.entity.Post;
+import com.compass.datapersistence.service.*;
+import com.compass.datapersistence.dto.CommentDTO;
+import com.compass.datapersistence.service.PostStateService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -15,10 +18,11 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class MessageConsumer {
-
     private ExternalDataService externalDataService;
     private MessageProducer messageProducer;
     private PostStateService postStateService;
+    private PostService postService;
+    private ObjectMapper objectMapper;
 
     @JmsListener(destination = "CREATED")
     public void receiveCreatedMessage(Long postId) {
@@ -28,22 +32,22 @@ public class MessageConsumer {
 
     @JmsListener(destination = "POST_FIND")
     public void receivePostFindMessage(Long postId) {
+        postStateService.statePostFind(postId);
+        var post = postService.getPostById(postId);
         externalDataService.fetchPost(postId)
                 .subscribe(
                         postDTO -> {
-                            postStateService.statePostFind(postId);
-                            messageProducer.sendPostOkMessage(postDTO);
-                        },
-                        error -> {
-                            messageProducer.sendFailureMessage(postId);
+                            post.setTitle(postDTO.getTitle());
+                            post.setBody(postDTO.getBody());
+                            messageProducer.sendPostOkMessage(post);
                         }
                 );
 
     }
     @JmsListener(destination = "POST_OK")
-    public void receivePostOkMessage(PostDTO postDTO) {
-        postStateService.statePostOk(postDTO);
-        messageProducer.sendCommentFindMessage(postDTO.getId());
+    public void receivePostOkMessage(Post post) {
+        postStateService.statePostOk(post);
+        messageProducer.sendCommentFindMessage(post.getId());
     }
     @JmsListener(destination = "COMMENTS_FIND")
     public void receiveCommentsFindMessage(Long postId) {
@@ -53,7 +57,15 @@ public class MessageConsumer {
                     return processCommentsBatch(postId, commentsBatch);
                 })
                 .subscribe(
-                        commentsList -> {
+                        commentsListDTO -> {
+                            var commentsList = commentsListDTO.stream()
+                                    .map(commentDTO -> {
+                                        Comment comment = new Comment();
+                                        comment.setId(commentDTO.getId());
+                                        comment.setBody(commentDTO.getBody());
+                                        return comment;
+                                    })
+                                    .toList();
                             messageProducer.sendCommentOkMessage(commentsList);
                         },
                         error -> {
@@ -62,7 +74,7 @@ public class MessageConsumer {
                 );
     }
     @JmsListener(destination = "COMMENTS_OK")
-    public void receiveCommentsOkMessage(List<CommentDTO> commentsList) {
+    public void receiveCommentsOkMessage(List<Comment> commentsList) {
         postStateService.stateCommentsOk(commentsList);
         messageProducer.sendEnabledMessage(commentsList.get(0).getId());
     }
@@ -90,7 +102,15 @@ public class MessageConsumer {
 
     private Mono<List<CommentDTO>> processCommentsBatch(Long postId, List<CommentDTO> commentsBatch) {
         if (!commentsBatch.isEmpty()) {
-            postStateService.stateCommentsFind(postId, commentsBatch);
+            var listComments = commentsBatch.stream()
+                    .map(commentDTO -> {
+                        Comment comment = new Comment();
+                        comment.setId(commentDTO.getId());
+                        comment.setBody(commentDTO.getBody());
+                        return comment;
+                    })
+                    .toList();
+            postStateService.stateCommentsFind(postId, listComments);
             return Mono.just(commentsBatch);
         }
         return Mono.empty();

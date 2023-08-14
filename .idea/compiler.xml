@@ -7,15 +7,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="state-management" />
         <module name="data-persistence" />
-        <module name="naming-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-server" target="17" />
       <module name="data-persistance" target="17" />
       <module name="messaging" target="17" />
+      <module name="naming-server" target="17" />
+      <module name="state-management" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

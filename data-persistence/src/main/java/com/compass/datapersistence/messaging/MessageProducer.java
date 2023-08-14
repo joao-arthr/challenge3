@@ -1,7 +1,8 @@
-package com.compass.statemanegement.messaging;
+package com.compass.datapersistence.messaging;
 
-import com.compass.statemanegement.dto.CommentDTO;
-import com.compass.statemanegement.dto.PostDTO;
+
+import com.compass.datapersistence.entity.Comment;
+import com.compass.datapersistence.entity.Post;
 import lombok.AllArgsConstructor;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -22,15 +23,15 @@ public class MessageProducer {
         jmsTemplate.convertAndSend("POST_FIND", postId);
     }
 
-    public void sendPostOkMessage(PostDTO postDTO) {
-        jmsTemplate.convertAndSend("POST_OK",postDTO);
+    public void sendPostOkMessage(Post post) {
+        jmsTemplate.convertAndSend("POST_OK",post);
     }
 
     public void sendCommentFindMessage(Long postId) {
         jmsTemplate.convertAndSend("COMMENT_FIND", postId);
     }
 
-    public void sendCommentOkMessage(List<CommentDTO> commentsList) {
+    public void sendCommentOkMessage(List<Comment> commentsList) {
         jmsTemplate.convertAndSend("COMMENT_OK", commentsList);
     }
 
