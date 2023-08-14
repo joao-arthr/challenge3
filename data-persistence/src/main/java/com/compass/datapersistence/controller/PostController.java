@@ -12,7 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
@@ -40,7 +39,7 @@ public class PostController {
         List<Post> posts = postService.getAllPosts();
         return posts.stream()
                 .map(post -> modelMapper.map(post, PostDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @GetMapping("/{id}")
@@ -52,6 +51,28 @@ public class PostController {
          } catch(PostNotFoundException ex){
             return ResponseEntity.notFound().build();
          }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostDTO> updatePost(@PathVariable Long id, @RequestBody PostDTO postDTO) {
+        try {
+            Post existingPost = postService.getPostById(id);
+            Post updatedPost = modelMapper.map(postDTO, Post.class);
+
+            existingPost.setTitle(updatedPost.getTitle());
+            existingPost.setBody(updatedPost.getBody());
+
+            postService.createPost(existingPost);
+
+            return ResponseEntity.ok(modelMapper.map(existingPost, PostDTO.class));
+        } catch (PostNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/exists/{postId}")
+    public boolean doesPostExists(@PathVariable Long postId){
+        return postService.doesPostExists(postId);
     }
 
 }

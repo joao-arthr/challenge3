@@ -1,26 +1,66 @@
 package com.compass.statemanegement.controller;
-import com.compass.statemanegement.dto.PostStateDTO;
+
+import com.compass.statemanegement.dto.PostDTO;
+import com.compass.statemanegement.feign.RemoteServiceClient;
+import com.compass.statemanegement.messaging.MessageProducer;
+import com.compass.statemanegement.service.PostStateService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/post")
+@AllArgsConstructor
+@RequestMapping("/posts")
 public class PostStateController {
 
-    @PostMapping
-    public ResponseEntity<String> transitionState(@RequestBody PostStateDTO transitionDTO) {
-        if (isValidTransition(transitionDTO)) {
+    private RemoteServiceClient remoteServiceClient;
+    private MessageProducer messageProducer;
+    private PostStateService postStateService;
 
-            return ResponseEntity.ok("State transition successful.");
-        } else {
-            return ResponseEntity.badRequest().body("Invalid state transition.");
+
+    @PostMapping("/{postId}")
+    public ResponseEntity<String> createPost(@PathVariable @Min(1) @Max(100) Long postId) {
+        if(remoteServiceClient.doesPostExists(postId)){
+            return ResponseEntity.badRequest().body("Must be a non-existing post.");
+        }else {
+            messageProducer.sendCreatedMessage(postId);
+            return ResponseEntity.ok().build();
         }
     }
 
-    private boolean isValidTransition(PostStateDTO transitionDTO) {
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> disablePost(@PathVariable @Min(1) @Max(100) Long postId) {
+        var post = remoteServiceClient.getPostById(postId);
+        if(postStateService.canBeDisabled(post)){
+            messageProducer.sendDisabledMessage(postId);
+            return ResponseEntity.ok().build();
+        } else{
+            return ResponseEntity.badRequest().body("Must be an ENABLED post");
+        }
 
-        return true;
     }
+
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<String> reprocessPost(@PathVariable @Min(1) @Max(100) Long postId) {
+        var post = remoteServiceClient.getPostById(postId);
+        if(postStateService.isUpdatable(post)){
+            messageProducer.sendUpdatingMessage(postId);
+            return ResponseEntity.ok().build();
+        } else{
+            return ResponseEntity.badRequest().body("Must be a DISABLED or ENABLED post");
+        }
+
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PostDTO>> getAllPosts(){
+        return ResponseEntity.ok(remoteServiceClient.getAllPosts());
+    }
+
 
 
 }

@@ -8,7 +8,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="state-management" />
-        <module name="messaging" />
         <module name="data-persistence" />
         <module name="naming-server" />
       </profile>
@@ -16,6 +15,7 @@
     <bytecodeTargetLevel>
       <module name="config-server" target="17" />
       <module name="data-persistance" target="17" />
+      <module name="messaging" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

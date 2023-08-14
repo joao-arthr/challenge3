@@ -24,4 +24,8 @@ public class PostService {
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
+
+    public boolean doesPostExists(Long postId) {
+        return postRepository.existsById(postId);
+    }
 }
