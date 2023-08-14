@@ -5,6 +5,7 @@ import com.compass.datapersistence.dto.PostDTO;
 import com.compass.datapersistence.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.config.EnableWebFlux;
@@ -25,7 +26,7 @@ public class ExternalDataService {
         return webClient.get()
                 .uri("/posts/{postId}", postId)
                 .retrieve()
-                .bodyToMono(PostDTO.class);
+                .bodyToMono(ParameterizedTypeReference.forType(PostDTO.class));
     }
 
     public Flux<CommentDTO> fetchComments(Long postId){

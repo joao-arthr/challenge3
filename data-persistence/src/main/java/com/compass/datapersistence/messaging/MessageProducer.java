@@ -23,16 +23,16 @@ public class MessageProducer {
         jmsTemplate.convertAndSend("POST_FIND", postId);
     }
 
-    public void sendPostOkMessage(Post post) {
-        jmsTemplate.convertAndSend("POST_OK",post);
+    public void sendPostOkMessage(Long postId) {
+        jmsTemplate.convertAndSend("POST_OK",postId);
     }
 
     public void sendCommentFindMessage(Long postId) {
         jmsTemplate.convertAndSend("COMMENT_FIND", postId);
     }
 
-    public void sendCommentOkMessage(List<Comment> commentsList) {
-        jmsTemplate.convertAndSend("COMMENT_OK", commentsList);
+    public void sendCommentOkMessage(Long postId) {
+        jmsTemplate.convertAndSend("COMMENT_OK", postId);
     }
 
     public void sendEnabledMessage(Long postId) {

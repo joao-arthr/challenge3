@@ -2,6 +2,7 @@ package com.compass.datapersistence.dto;
 
 import com.compass.datapersistence.entity.Comment;
 import com.compass.datapersistence.entity.PostState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class PostDTO {
     private String title;
     @JsonProperty("body")
     private String body;
+    @JsonIgnore
     List<Comment> comments;
+    @JsonIgnore
     List<PostState> history;
 }

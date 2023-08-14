@@ -38,11 +38,8 @@ public class MessageConsumer {
                 postDTO -> {
                     post.setTitle(postDTO.getTitle());
                     post.setBody(postDTO.getBody());
-
-                    messageProducer.sendPostOkMessage(post);
-                },
-                error ->{
-                    System.out.println(error.getLocalizedMessage());
+                    postService.createPost(post);
+                    messageProducer.sendPostOkMessage(postId);
                 }
         );
 
@@ -69,7 +66,7 @@ public class MessageConsumer {
                                         return comment;
                                     })
                                     .toList();
-                            messageProducer.sendCommentOkMessage(commentsList);
+                            messageProducer.sendCommentOkMessage(postId);
                         },
                         error -> {
                             messageProducer.sendFailureMessage(postId);
