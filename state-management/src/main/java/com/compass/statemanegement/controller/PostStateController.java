@@ -23,12 +23,8 @@ public class PostStateController {
 
     @PostMapping("/{postId}")
     public ResponseEntity<String> createPost(@PathVariable @Min(1) @Max(100) Long postId) {
-        if(remoteServiceClient.doesPostExists(postId)){
-            return ResponseEntity.badRequest().body("Must be a non-existing post.");
-        }else {
             messageProducer.sendCreatedMessage(postId);
             return ResponseEntity.ok().build();
-        }
     }
 
     @DeleteMapping("/{postId}")

@@ -31,12 +31,12 @@ public interface RemoteServiceClient {
     ResponseEntity<List<CommentDTO>> getAllComments(@PathVariable Long postId);
 
     @PostMapping("/api/status")
-    public ResponseEntity<PostStateDTO> createHistory(@RequestBody PostStateDTO postStateDTO);
+    ResponseEntity<PostStateDTO> createHistory(@RequestBody PostStateDTO postStateDTO);
 
     @GetMapping("/api/status/{postId}")
-    public ResponseEntity<List<PostStateDTO>> getAllHistories(@PathVariable Long postId);
+    ResponseEntity<List<PostStateDTO>> getAllHistories(@PathVariable Long postId);
 
     @GetMapping("/api/posts/exists/{postId}")
-    public boolean doesPostExists(@PathVariable Long postId);
+    boolean doesPostExists(@PathVariable Long postId);
 
 }

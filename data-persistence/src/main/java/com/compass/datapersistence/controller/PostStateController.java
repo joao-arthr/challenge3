@@ -13,7 +13,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/state")
+@RequestMapping("/api/status")
 public class PostStateController {
 
     private final PostStateService postStateService;

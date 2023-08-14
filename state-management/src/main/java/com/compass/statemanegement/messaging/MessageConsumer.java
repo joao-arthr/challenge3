@@ -4,6 +4,7 @@ import com.compass.statemanegement.dto.CommentDTO;
 import com.compass.statemanegement.dto.PostDTO;
 import com.compass.statemanegement.service.ExternalDataService;
 import com.compass.statemanegement.service.PostStateService;
+import lombok.AllArgsConstructor;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -12,6 +13,7 @@ import java.util.List;
 
 
 @Component
+@AllArgsConstructor
 public class MessageConsumer {
 
     private ExternalDataService externalDataService;
@@ -26,7 +28,6 @@ public class MessageConsumer {
 
     @JmsListener(destination = "POST_FIND")
     public void receivePostFindMessage(Long postId) {
-
         externalDataService.fetchPost(postId)
                 .subscribe(
                         postDTO -> {
@@ -42,7 +43,7 @@ public class MessageConsumer {
     @JmsListener(destination = "POST_OK")
     public void receivePostOkMessage(PostDTO postDTO) {
         postStateService.statePostOk(postDTO);
-        messageProducer.sendCommentFindMessage(postDTO.id());
+        messageProducer.sendCommentFindMessage(postDTO.getId());
     }
     @JmsListener(destination = "COMMENTS_FIND")
     public void receiveCommentsFindMessage(Long postId) {
@@ -63,7 +64,7 @@ public class MessageConsumer {
     @JmsListener(destination = "COMMENTS_OK")
     public void receiveCommentsOkMessage(List<CommentDTO> commentsList) {
         postStateService.stateCommentsOk(commentsList);
-        messageProducer.sendEnabledMessage(commentsList.get(0).id());
+        messageProducer.sendEnabledMessage(commentsList.get(0).getId());
     }
     @JmsListener(destination = "ENABLED")
     public void receiveEnabledMessage(Long postId) {

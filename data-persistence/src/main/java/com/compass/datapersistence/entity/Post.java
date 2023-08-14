@@ -1,5 +1,6 @@
 package com.compass.datapersistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,7 +18,9 @@ public class Post {
     private String title;
     private String body;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<PostState> stateHistory = new ArrayList<>();
 }

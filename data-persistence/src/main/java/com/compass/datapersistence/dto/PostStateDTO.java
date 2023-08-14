@@ -1,7 +1,19 @@
 package com.compass.datapersistence.dto;
 
 import com.compass.datapersistence.entity.Post;
+import com.compass.datapersistence.enums.PostState;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-public record PostStateDTO(Integer id, String status, LocalDateTime timestamp, Post post) {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PostStateDTO{
+    Integer id;
+    PostState status;
+    LocalDateTime date;
+    Post post;
 }

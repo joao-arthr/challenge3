@@ -17,7 +17,9 @@ public class ExternalDataService {
 
     public Mono<PostDTO> fetchPost(Long postId){
         return webClient.get()
-                .uri("/posts/{postId}")
+                .uri(uriBuilder -> uriBuilder
+                        .path("/posts/{postId}")
+                        .build(postId))
                 .retrieve()
                 .bodyToMono(PostDTO.class);
     }

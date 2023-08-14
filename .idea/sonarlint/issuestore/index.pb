@@ -23,11 +23,9 @@ Qnaming-server/src/main/java/com/compass/namingserver/NamingServerApplication.ja
 Zstate-management/src/main/java/com/compass/statemanegement/StateManagementApplication.java,c\d\cd511a4f6357c759ca1c83e6040598b3c942a12f
 H
 data-persistence/pom.xml,9\c\9c59819dcc821060f5035071b406c871e70005a4
-
-Ostate-management/src/main/java/com/compass/statemanegement/enums/PostState.java,f\4\f421fddc1f70dd8e0195022bc52684f2257718cd
-{
-Kdata-persistence/src/main/java/com/compass/datapersistence/dto/PostDTO.java,0\0\00cfd7a25e23cd09fbcc3a6744e1f74b2d26acf7
-{
-Kdata-persistence/src/main/java/com/compass/datapersistence/entity/Post.java,d\a\dabd275f0bff94d6116de852c6d36e4ebf433c59
-~
-Ndata-persistence/src/main/java/com/compass/datapersistence/dto/CommentDTO.java,b\9\b9ef59a67ac82681edc7bac40838eb4074b1bdeb
+Ž
+^data-persistence/src/main/java/com/compass/datapersistence/repository/PostStateRepository.java,7\c\7cf8f8bda2079030d9ab5843a78662512d47d07f
+‰
+Ydata-persistence/src/main/java/com/compass/datapersistence/repository/PostRepository.java,3\b\3b75d7ec1a38cd48a9688d8bb19feb4442d52bb0
+ƒ
+Sdata-persistence/src/main/java/com/compass/datapersistence/service/PostService.java,7\d\7d758186b38548fecfe7f8c89426c54ba7b9838e

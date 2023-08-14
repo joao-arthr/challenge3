@@ -1,5 +1,6 @@
 package com.compass.datapersistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,9 +14,10 @@ public class PostState {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDateTime date;
-    private String status;
+    private com.compass.datapersistence.enums.PostState status;
     @ManyToOne
     @JoinColumn(name="post_id")
+    @JsonBackReference
     private Post post;
 
 }
