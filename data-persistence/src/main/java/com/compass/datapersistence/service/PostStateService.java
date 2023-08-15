@@ -41,9 +41,8 @@ public class PostStateService {
                 new PostState(postService.getPostById(postId), LocalDateTime.now(), Status.POST_FIND));
     }
 
-    public void statePostOk(Post post){
-        postService.createPost(post);
-        postStateRepository.save(new PostState(post, LocalDateTime.now(), Status.POST_OK));
+    public void statePostOk(Long postId){
+        postStateRepository.save(new PostState(postService.getPostById(postId), LocalDateTime.now(), Status.POST_OK));
     }
 
     public void stateDisabled(Long postId) {
@@ -62,9 +61,9 @@ public class PostStateService {
                 new PostState(postService.getPostById(postId), LocalDateTime.now(), Status.COMMENTS_FIND));
     }
 
-    public void stateCommentsOk(List<Comment> commentsList) {
+    public void stateCommentsOk(Long postId) {
         postStateRepository.save(
-                new PostState(commentsList.get(0).getPost(), LocalDateTime.now(), Status.COMMENTS_OK));
+                new PostState(postService.getPostById(postId), LocalDateTime.now(), Status.COMMENTS_OK));
     }
 
     public void stateEnabled(Long postId) {

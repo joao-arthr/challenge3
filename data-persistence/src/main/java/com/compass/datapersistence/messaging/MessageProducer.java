@@ -28,11 +28,11 @@ public class MessageProducer {
     }
 
     public void sendCommentFindMessage(Long postId) {
-        jmsTemplate.convertAndSend("COMMENT_FIND", postId);
+        jmsTemplate.convertAndSend("COMMENTS_FIND", postId);
     }
 
     public void sendCommentOkMessage(Long postId) {
-        jmsTemplate.convertAndSend("COMMENT_OK", postId);
+        jmsTemplate.convertAndSend("COMMENTS_OK", postId);
     }
 
     public void sendEnabledMessage(Long postId) {
@@ -44,7 +44,7 @@ public class MessageProducer {
     }
 
     public void sendFailureMessage(Long postId) {
-        jmsTemplate.convertAndSend("FAILURE", postId);
+        jmsTemplate.convertAndSend("FAILED", postId);
     }
 
     public void sendUpdatingMessage(Long postId) {

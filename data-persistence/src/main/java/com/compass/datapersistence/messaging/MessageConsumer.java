@@ -22,7 +22,7 @@ public class MessageConsumer {
     private MessageProducer messageProducer;
     private PostStateService postStateService;
     private PostService postService;
-    private ObjectMapper objectMapper;
+    private CommentService commentService;
 
     @JmsListener(destination = "CREATED")
     public void receiveCreatedMessage(Long postId) {
@@ -40,43 +40,40 @@ public class MessageConsumer {
                     post.setBody(postDTO.getBody());
                     postService.createPost(post);
                     messageProducer.sendPostOkMessage(postId);
+                },
+                error ->{
+                    messageProducer.sendFailureMessage(postId);
                 }
         );
 
     }
     @JmsListener(destination = "POST_OK")
-    public void receivePostOkMessage(Post post) {
-        postStateService.statePostOk(post);
-        messageProducer.sendCommentFindMessage(post.getId());
+    public void receivePostOkMessage(Long postId) {
+        postStateService.statePostOk(postId);
+        messageProducer.sendCommentFindMessage(postId);
     }
     @JmsListener(destination = "COMMENTS_FIND")
     public void receiveCommentsFindMessage(Long postId) {
         externalDataService.fetchComments(postId)
-                .buffer(5)
-                .flatMap(commentsBatch -> {
-                    return processCommentsBatch(postId, commentsBatch);
+                .map(
+                        commentDTO -> {
+                    Comment comment = new Comment();
+                    comment.setId(commentDTO.getId());
+                    comment.setBody(commentDTO.getBody());
+                    comment.setPost(postService.getPostById(postId));
+                    return comment;
                 })
                 .subscribe(
-                        commentsListDTO -> {
-                            var commentsList = commentsListDTO.stream()
-                                    .map(commentDTO -> {
-                                        Comment comment = new Comment();
-                                        comment.setId(commentDTO.getId());
-                                        comment.setBody(commentDTO.getBody());
-                                        return comment;
-                                    })
-                                    .toList();
+                        comment -> {
+                            commentService.createComment(comment);
                             messageProducer.sendCommentOkMessage(postId);
-                        },
-                        error -> {
-                            messageProducer.sendFailureMessage(postId);
                         }
                 );
     }
     @JmsListener(destination = "COMMENTS_OK")
-    public void receiveCommentsOkMessage(List<Comment> commentsList) {
-        postStateService.stateCommentsOk(commentsList);
-        messageProducer.sendEnabledMessage(commentsList.get(0).getId());
+    public void receiveCommentsOkMessage(Long postId) {
+        postStateService.stateCommentsOk(postId);
+        messageProducer.sendEnabledMessage(postId);
     }
     @JmsListener(destination = "ENABLED")
     public void receiveEnabledMessage(Long postId) {
@@ -100,20 +97,5 @@ public class MessageConsumer {
         messageProducer.sendDisabledMessage(postId);
     }
 
-    private Mono<List<CommentDTO>> processCommentsBatch(Long postId, List<CommentDTO> commentsBatch) {
-        if (!commentsBatch.isEmpty()) {
-            var listComments = commentsBatch.stream()
-                    .map(commentDTO -> {
-                        Comment comment = new Comment();
-                        comment.setId(commentDTO.getId());
-                        comment.setBody(commentDTO.getBody());
-                        return comment;
-                    })
-                    .toList();
-            postStateService.stateCommentsFind(postId, listComments);
-            return Mono.just(commentsBatch);
-        }
-        return Mono.empty();
-    }
 
 }

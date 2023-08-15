@@ -24,4 +24,8 @@ public class CommentService {
         commentRepository.deleteAll(comments);
     }
 
+    public void createComment(Comment comment){
+        commentRepository.save(comment);
+    }
+
 }
