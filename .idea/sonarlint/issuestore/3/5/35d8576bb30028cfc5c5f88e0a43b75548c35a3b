@@ -1,0 +1,14 @@
+
+u
+java:S1128"SRemove this unused import 'org.springframework.cloud.openfeign.EnableFeignClients'.(Š˜Â®ýÿÿÿÿ8¬ƒ»¬Ÿ1
+e
+java:S1128"HRemove this unused import 'org.springframework.context.annotation.Bean'.(‚î‰Þ8ê×Ç¬Ÿ1
+q
+java:S1128"TRemove this unused import 'org.springframework.http.codec.json.Jackson2JsonDecoder'.(£Å©¥8ê×Ç¬Ÿ1
+t
+java:S1128	"RRemove this unused import 'org.springframework.web.reactive.config.EnableWebFlux'.(È¯‹Êûÿÿÿÿ8‰ýó­Ÿ1
+}
+java:S1128
+"`Remove this unused import 'org.springframework.web.reactive.function.client.ExchangeStrategies'.(Øé±ù8ê×Ç¬Ÿ1
+y
+java:S1128"WRemove this unused import 'org.springframework.web.reactive.function.client.WebClient'.(¬àŽ•ýÿÿÿÿ8ê×Ç¬Ÿ1

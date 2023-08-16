@@ -66,9 +66,11 @@ public class MessageConsumer {
                 .subscribe(
                         comment -> {
                             commentService.createComment(comment);
-                            messageProducer.sendCommentOkMessage(postId);
+
                         }
                 );
+        messageProducer.sendCommentOkMessage(postId);
+
     }
     @JmsListener(destination = "COMMENTS_OK")
     public void receiveCommentsOkMessage(Long postId) {

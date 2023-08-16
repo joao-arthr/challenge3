@@ -1,5 +1,6 @@
 package com.compass.datapersistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,5 +12,6 @@ public class Comment {
     private String body;
     @ManyToOne
     @JoinColumn(name="post_id")
+    @JsonBackReference
     private Post post;
 }
